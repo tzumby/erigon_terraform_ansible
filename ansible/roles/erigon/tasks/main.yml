@@ -1,0 +1,119 @@
+---
+  - stat:
+      path: /usr/local/bin/erigon
+    register: erigon_built
+    tags:
+      - erigon
+
+  - stat:
+      path: /usr/local/bin/rpcdaemon
+    register: rpcdaemon_built
+    tags:
+      - erigon
+
+  - stat:
+      path: /home/erigon
+    register: erigon_user
+    tags:
+      - erigon
+
+  - name: Install build-essential
+    apt:
+      name: build-essential
+      state: present
+      update_cache: yes
+    tags:
+      - erigon
+
+  - name: Clone erigon repo
+    git:
+      repo: https://github.com/ledgerwatch/erigon.git
+      dest: /tmp/erigon
+      depth: 8
+      clone: yes
+      update: yes
+      recursive: yes
+    when: erigon_built.stat.exists == false
+    tags: 
+      - erigon
+
+  - name: Make erigon
+    make:
+      chdir: /tmp/erigon
+      target: erigon
+    when: erigon_built.stat.exists == false
+    tags: 
+      - erigon
+
+  - name: Make rpcdaemon
+    make:
+      chdir: /tmp/erigon
+      target: rpcdaemon
+    when: rpcdaemon_built.stat.exists == false
+    tags: 
+      - erigon
+
+  - name: Move erigon binary
+    command: mv /tmp/erigon/build/bin/erigon /usr/local/bin
+    when: erigon_built.stat.exists == false
+    tags: 
+      - erigon
+
+  - name: Move rpcdaemon binary
+    command: mv /tmp/erigon/build/bin/rpcdaemon /usr/local/bin
+    when: rpcdaemon_built.stat.exists == false
+    tags: 
+      - erigon
+
+  - name: Erigon binary permissions
+    file:
+      path: /usr/local/bin/erigon
+      owner: erigon
+      group: erigon
+    tags: 
+      - erigon
+
+  - name: Rpcdaemon binary permissions
+    file:
+      path: /usr/local/bin/rpcdaemon
+      owner: erigon
+      group: erigon
+    tags: 
+      - erigon
+
+  - name: Make erigon user
+    make:
+      chdir: /tmp/erigon
+      target: user_linux
+    when: erigon_user.stat.exists == false
+    tags: 
+      - erigon
+
+  - name: Copy systemd service file to server
+    copy:
+      src: erigon.service
+      dest: /etc/systemd/system
+      owner: erigon
+      group: erigon
+    when: erigon_built.stat.exists == true
+    tags: 
+      - erigon
+
+  - name: Copy rpcdaemon systemd service file to server
+    copy:
+      src: rpcdaemon.service
+      dest: /etc/systemd/system
+      owner: erigon
+      group: erigon
+    when: rpcdaemon_built.stat.exists == true
+    tags: 
+      - erigon
+
+  - name: Start erigon service
+    systemd:
+      name: rpcdaemon.service
+      daemon_reload: yes
+      enabled: true
+      state: started
+    tags:
+      - erigon

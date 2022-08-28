@@ -1,0 +1,8 @@
+[bastion]
+3.xxx.xxx.xxx
+
+[eth_node]
+10.0.0.84
+
+[metrics_node]
+10.0.0.117

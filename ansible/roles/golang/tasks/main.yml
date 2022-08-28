@@ -1,0 +1,38 @@
+---
+- stat:
+    path: "{{ go_install_path }}go/bin/go"
+  register: go_installed
+  tags:
+    - golang
+
+- name: download package
+  get_url:
+    url: "{{ go_binary }}"
+    dest: /tmp/go1.18.4.linux-amd64.tar.gz
+  when: go_installed.stat.exists == false
+  tags:
+    - golang
+
+- name: extract go package
+  unarchive:
+    src: /tmp/go1.18.4.linux-amd64.tar.gz
+    dest: "{{ go_install_path }}"
+    remote_src: yes
+  when: go_installed.stat.exists == false
+  tags:
+    - golang
+
+- name: make go executable
+  file:
+    path: "{{ go_install_path }}go/bin/go"
+    mode: a+x
+  tags:
+    - golang
+
+- name: link to binary
+  file:
+    path: "{{ go_install_path }}bin/go"
+    src: "{{ go_install_path }}go/bin/go"
+    state: link
+  tags:
+    - golang
