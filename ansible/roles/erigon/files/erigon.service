@@ -5,7 +5,7 @@ Wants=network-online.target
 
 [Service]
 WorkingDirectory=/usr/local/bin
-ExecStart=/usr/local/bin/erigon --datadir=/var/data/mainnet --private.api.addr=0.0.0.0:8090 --prune=htc --prune.r.before=15279805 --metrics --metrics.addr 0.0.0.0
+ExecStart=/usr/local/bin/erigon --datadir=/home/erigon/mainnet --private.api.addr=0.0.0.0:8090 --prune=htc --prune.r.before=15279805 --metrics --metrics.addr 0.0.0.0
 User=erigon
 Restart=always
 RestartSec=5s
