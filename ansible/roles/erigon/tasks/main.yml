@@ -65,6 +65,23 @@
     tags: 
       - erigon
 
+  - name: Create data folder
+    file:
+      path: /var/data/erigon
+      state: directory
+      owner: erigon
+      group: erigon
+    tags:
+      - erigon
+
+  - name: Make erigon user
+    make:
+      chdir: /tmp/erigon
+      target: user_linux
+    when: erigon_user.stat.exists == false
+    tags: 
+      - erigon
+
   - name: Erigon binary permissions
     file:
       path: /usr/local/bin/erigon
@@ -81,21 +98,12 @@
     tags: 
       - erigon
 
-  - name: Make erigon user
-    make:
-      chdir: /tmp/erigon
-      target: user_linux
-    when: erigon_user.stat.exists == false
-    tags: 
-      - erigon
-
   - name: Copy systemd service file to server
     copy:
       src: erigon.service
       dest: /etc/systemd/system
       owner: erigon
       group: erigon
-    when: erigon_built.stat.exists == true
     tags: 
       - erigon
 
@@ -105,11 +113,19 @@
       dest: /etc/systemd/system
       owner: erigon
       group: erigon
-    when: rpcdaemon_built.stat.exists == true
     tags: 
       - erigon
 
   - name: Start erigon service
+    systemd:
+      name: erigon.service
+      daemon_reload: yes
+      enabled: true
+      state: started
+    tags:
+      - erigon
+
+  - name: Start rpcdaemon service
     systemd:
       name: rpcdaemon.service
       daemon_reload: yes

@@ -1,0 +1,25 @@
+---
+  - name: Make ext4 file system from attached volume
+    become: true
+    command: "mkfs -t ext4 {{ device_name }}"
+
+  - name: Create mount directory
+    become: true
+    file:
+      state: directory
+      path: "{{ mount_point }}" 
+      recurse: true
+
+  - name: Mount the volume
+    become: true
+    command: "mount {{device_name}} {{mount_point}}" 
+
+  - name: Update fstab
+    become: true
+    lineinfile:
+      line: "{{device_name}}\t{{mount_point}}\text4\tdefaults,nofail\t0\t2"
+      dest: /etc/fstab
+      insertafter: EOF
+      state: present
+    tags:
+      - cmd

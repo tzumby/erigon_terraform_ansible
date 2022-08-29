@@ -13,6 +13,10 @@ resource "aws_instance" "ssh_bastion" {
   tags = {
     Name  = "ssh_bastion"
   }
+
+  root_block_device {
+    volume_size = 30
+  }
 }
 
 resource "aws_instance" "erigon_node" {
@@ -35,6 +39,10 @@ resource "aws_instance" "erigon_node" {
     device_name = "/dev/sdg"
     volume_size = 1000
     volume_type = "gp2"
+  }
+
+  root_block_device {
+    volume_size = 30
   }
 }
 

@@ -4,7 +4,7 @@ After=erigon.service
 
 [Service]
 WorkingDirectory=/usr/local/bin
-ExecStart=/usr/local/bin/rpcdaemon --datadir=/home/erigon/mainnet --txpool.api.addr=0.0.0.0:9090 --private.api.addr=0.0.0.0:9090 --http.addr=0.0.0.0 --http.api=eth,erigon,web3,net,debug,txpool --ws
+ExecStart=/usr/local/bin/rpcdaemon --datadir=/var/data/erigon/mainnet --txpool.api.addr=0.0.0.0:9090 --private.api.addr=0.0.0.0:9090 --http.addr=0.0.0.0 --http.api=eth,erigon,web3,net,debug,txpool --ws
 User=erigon
 Restart=always
 RestartSec=5s

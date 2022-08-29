@@ -5,10 +5,11 @@
     - devsec.hardening
     - fahcsim.grafana_stack
   vars:
+    prometheus_target: 10.0.0.44:6060
     users:
       - name: tzumby
         # generated using openssl passwd -salt <salt> -1 <plaintext>
-        password: '$1$testingt$cUm94st/Mxuw/PHyun8lp0'
+        password: '$1$7Z7Q43WP$/9UJOwAVD/CpMmYQ/nXDw1'
         pub_keys:
           - templates/users/tzumby/key.pub
     sysctl_overwrite:

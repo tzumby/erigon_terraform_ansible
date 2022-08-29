@@ -4,10 +4,12 @@
   collections:
     - devsec.hardening
   vars:
+    device_name: /dev/xvdg
+    mount_point: /var/data
     users:
       - name: tzumby
         # generated using openssl passwd -salt <salt> -1 <plaintext>
-        password: '$1$testingt$cUm94st/Mxuw/PHyun8lp0'
+        password: '$1$7Z7Q43WP$/9UJOwAVD/CpMmYQ/nXDw1'
         pub_keys:
           - templates/users/tzumby/key.pub
     sysctl_overwrite:
@@ -16,5 +18,6 @@
   roles:
     - users
     - devsec.hardening.os_hardening
+    - volumes
     - golang
     - erigon
