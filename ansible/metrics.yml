@@ -5,7 +5,8 @@
     - devsec.hardening
     - fahcsim.grafana_stack
   vars:
-    prometheus_target: 10.0.0.44:6060
+    prometheus_targets: 
+      - 10.0.0.44:6060
     users:
       - name: tzumby
         # generated using openssl passwd -salt <salt> -1 <plaintext>

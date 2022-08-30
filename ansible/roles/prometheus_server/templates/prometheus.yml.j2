@@ -9,4 +9,6 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets: 
-        - {{ prometheus_target }}
+{% for target in prometheus_targets %}
+        - {{ target }}
+{%- endfor %}
