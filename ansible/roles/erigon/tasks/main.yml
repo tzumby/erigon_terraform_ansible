@@ -29,9 +29,9 @@
     git:
       repo: https://github.com/ledgerwatch/erigon.git
       dest: /tmp/erigon
-      depth: 8
+      refspec: defbddf8d64718c71ec24c408f31c7f28ecf3e9e
       clone: yes
-      update: yes
+      update: false
       recursive: yes
     when: erigon_built.stat.exists == false
     tags: 
@@ -107,27 +107,9 @@
     tags: 
       - erigon
 
-  - name: Copy rpcdaemon systemd service file to server
-    copy:
-      src: rpcdaemon.service
-      dest: /etc/systemd/system
-      owner: erigon
-      group: erigon
-    tags: 
-      - erigon
-
   - name: Start erigon service
     systemd:
       name: erigon.service
-      daemon_reload: yes
-      enabled: true
-      state: started
-    tags:
-      - erigon
-
-  - name: Start rpcdaemon service
-    systemd:
-      name: rpcdaemon.service
       daemon_reload: yes
       enabled: true
       state: started
