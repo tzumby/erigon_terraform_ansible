@@ -29,7 +29,7 @@
     git:
       repo: https://github.com/ledgerwatch/erigon.git
       dest: /tmp/erigon
-      refspec: defbddf8d64718c71ec24c408f31c7f28ecf3e9e
+      refspec: 4067b7c4da6c5d741d3027d95ae2afdf6b7a943a
       clone: yes
       update: false
       recursive: yes
